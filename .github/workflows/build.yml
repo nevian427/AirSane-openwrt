@@ -12,8 +12,8 @@ jobs:
   build:
     strategy:
       matrix:
-        wrtrel: ['22.03.2', '23.05.0', '23.05.2']
-        sdk: ['ramips-mt76x8', 'bcm27xx-bcm2708']
+        wrtrel: ['22.03.6', '23.05.3']
+        sdk: ['ramips-mt7621']
 
     runs-on: ubuntu-latest
 
@@ -23,7 +23,7 @@ jobs:
       - uses: openwrt/gh-action-sdk@main
         env:
           ARCH: ${{ matrix.sdk }}-${{ matrix.wrtrel }}
-          EXTRA_FEEDS: src-git|airsaned|https://github.com/cmangla/AirSane-openwrt.git^${{ github.sha }}
+          EXTRA_FEEDS: src-git|airsaned|https://github.com/nevian427/AirSane-openwrt.git^${{ github.sha }}
           PACKAGES: airsaned
 
       - run: bash ./.github/work.sh pkg-ver airsaned/Makefile | tee $GITHUB_ENV
@@ -33,4 +33,3 @@ jobs:
         with:
           name: airsaned_${{ env.PKG_FULL_VERSION }}_openwrt-${{ matrix.wrtrel }}_${{ matrix.sdk }}.ipk
           path: bin/packages/**/airsaned_*.ipk
-
